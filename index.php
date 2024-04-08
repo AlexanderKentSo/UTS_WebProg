@@ -1,3 +1,30 @@
+<?php
+session_start();
+if (isset($_SESSION["array"])) {
+    $themes = $_SESSION["array"];
+}
+
+$bg = "white";
+$hd = "black";
+$al = "left";
+$pg = "black";
+$sz = "12";
+
+if (isset($_POST["chooseTheme"])) {
+    $arrTheme = $themes[$_POST["theme"]];
+    $bg = $arrTheme["background"];
+    $hd = $arrTheme["heading"];
+    $al = $arrTheme["alignment"];
+    $pg = $arrTheme["paragraph"];
+    $sz = $arrTheme["size"];
+}
+
+if (isset($_POST["editTheme"])) {
+    $th = $_POST["theme"];
+    header("location:edit.php?theme=$th");
+}
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -7,46 +34,35 @@
     <title>Home Page</title>
     <style>
         body {
-            background-color: lightblue;
+            background-color: <?php echo $bg; ?>;
         }
 
         h1 {
-            color: blue;
-            text-align: center;
+            color: <?php echo $hd; ?>;
+            text-align: <?php echo $al; ?>;
         }
 
         p {
-            color: black;
-            font-size: 20px;
+            color: <?php echo $pg; ?>;
+            font-size: <?php echo $sz; ?>px;
         }
-
-        <?php
-
-        ?>
     </style>
 </head>
 
 <body>
-    <?php
-
-    ?>
-    <select name="theme" id="themeBox">
-        <option value="">--Choose Theme--</option>
-        <?php
-        if (isset($_COOKIE["theme"])) {
-            $arrTheme = $_COOKIE["theme"];
-            foreach ($arrTheme as $arr) {
-                echo '<option value="' . $arr["nama"] . '">' . $arr["nama"] . '</option>';
-            }
-        }
-        ?>
-    </select>
-    <a style="text-decoration: underline;" href="tambah.php">Add new Theme</a>
-    <br>
     <p>
     <form method="post" action="index.php">
-        <input type="button" name="chooseTheme" value="Choose the Theme">
-        <input type="button" name="editTheme" value="Edit the theme">
+        <select name="theme" id="themeBox">
+            <option value="">--Choose Theme--</option>
+            <?php
+            foreach (array_keys($themes) as $th3m3) {
+                echo '<option value="' . $th3m3 . '">' . $th3m3 . '</option>';
+            }
+            ?>
+        </select>
+        <a style="text-decoration: underline;" href="tambah.php">Add new Theme</a><br>
+        <input type="submit" name="chooseTheme" value="Choose the Theme">
+        <input type="submit" name="editTheme" value="Edit the theme">
     </form>
     </p>
     <hr>

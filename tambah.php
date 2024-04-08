@@ -1,23 +1,20 @@
 <?php
-$themes = array();
-if (isset($_COOKIE["theme"])) {
-    $th = $_COOKIE["theme"];
-    echo "<p>$th</p>";
+session_start();
+if (isset($_SESSION["array"])) {
+    $themes = $_SESSION["array"];
 }
+
 
 if (isset($_POST["ok"])) {
     $theme = $_POST["theme"];
     $background = $_POST["background"];
     $heading = $_POST["heading"];
-    $alignment = $_POST["aligment"];
+    $alignment = $_POST["alignment"];
     $paragraph = $_POST["paragraph"];
     $size = $_POST["size"];
-    setcookie("theme", $theme, time() + 600);
-    setcookie("background", $background, time() + 600);
-    setcookie("heading", $heading, time() + 600);
-    setcookie("aligment", $alignment, time() + 600);
-    setcookie("paragraph", $paragraph, time() + 600);
-    setcookie("size", $size, time() + 600);
+    $arr = array("background" => $background, "heading" => $heading, "alignment" => $alignment, "paragraph" => $paragraph, "size" => $size);
+    $themes[$theme] = $arr;
+    $_SESSION["array"] = $themes;
 }
 ?>
 
