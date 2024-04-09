@@ -1,7 +1,6 @@
 <?php
-session_start();
-if (isset($_SESSION["array"])) {
-    $themes = $_SESSION["array"];
+if (isset($_COOKIE["array"])) {
+    $themes = unserialize($_COOKIE["array"]);
 }
 
 $bg = "white";
@@ -52,7 +51,7 @@ if (isset($_POST["editTheme"])) {
 <body>
     <p>
     <form method="post" action="index.php">
-        <select name="theme" id="themeBox">
+        <select name="theme" id="themeBox" required>
             <option value="">--Choose Theme--</option>
             <?php
             foreach (array_keys($themes) as $th3m3) {

@@ -1,11 +1,9 @@
 <?php
-session_start();
-if (isset($_SESSION["array"])) {
-    $themes = $_SESSION["array"];
+if (isset($_COOKIE["array"])) {
+    $themes = unserialize($_COOKIE["array"]);
 }
 
-
-if (isset($_POST["ok"])) {
+if (isset($_POST["insert"])) {
     $theme = $_POST["theme"];
     $background = $_POST["background"];
     $heading = $_POST["heading"];
@@ -14,7 +12,8 @@ if (isset($_POST["ok"])) {
     $size = $_POST["size"];
     $arr = array("background" => $background, "heading" => $heading, "alignment" => $alignment, "paragraph" => $paragraph, "size" => $size);
     $themes[$theme] = $arr;
-    $_SESSION["array"] = $themes;
+    setcookie("array", serialize($themes), time() + 600);
+    header("location:index.php");
 }
 ?>
 
@@ -29,21 +28,21 @@ if (isset($_POST["ok"])) {
 
 <body>
     <form action="tambah.php" method="post">
-        <p><label for="theme">Name of your theme: </label><input type="text" name="theme" id="theme"></p>
-        <p><label for="background">Color of Page Background: </label><input type="color" name="background" id="background"></p>
-        <p><label for="heading">Color of Heading: </label><input type="color" name="heading" id="heading"></p>
+        <p><label for="theme">Name of your theme: </label><input type="text" name="theme" id="theme" required></p>
+        <p><label for="background">Color of Page Background: </label><input type="color" name="background" id="background" required></p>
+        <p><label for="heading">Color of Heading: </label><input type="color" name="heading" id="heading" required></p>
         <p><label for="alignment">Alignment of Heading: </label>
-            <select name="alignment" id="alignment">
+            <select name="alignment" id="alignment" required>
                 <option value="">--select alignment--</option>
                 <option value="center">Center</option>
                 <option value="left">Left</option>
                 <option value="Right">Right</option>
             </select>
         </p>
-        <p><label for="paragraph">Color of Paragraph: </label><input type="color" name="paragraph" id="paragraph"></p>
-        <p><label for="size">Font Size of your Paragraph: </label><input type="number" name="size" id="size" min="0">
+        <p><label for="paragraph">Color of Paragraph: </label><input type="color" name="paragraph" id="paragraph" required></p>
+        <p><label for="size">Font Size of your Paragraph: </label><input type="number" name="size" id="size" min="0" required>
         <p>
-            <button type="submit" name="ok" value="ok">SAVE</button>
+            <button type="submit" name="insert" value="ok">SAVE</button>
         </p>
     </form>
 </body>
